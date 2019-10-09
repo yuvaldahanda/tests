@@ -38,7 +38,7 @@ class seleniumInf {
             try {
                 element = await this.findElementBy(locatorType, locatorValue, null)
                 await element.click();
-                console.log('The element with the type '+locatorType +' and value '+locatorValue+' clicked')
+                console.log('The element with the type '+locatorType +' and value '+locatorValue+' clicked \n')
             }
             catch (error) {
                 throw error

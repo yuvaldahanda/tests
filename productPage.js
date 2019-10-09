@@ -6,43 +6,59 @@ class ProductPage{
     constructor(URL){
         this.seleniumInfra = new SeleniumInf()
         this.seleniumInfra.getURL(URL)
+        this.up
+        this.down
     }
 
-    async pressUp(cakeBefore, cakeAfter) // Two arrayes of cakes before the click arrow up and after
+    async getTableElements()
     {
-        let arr = await this.sort_array()
-        if (arr[0] == cakeBefore[0] && arr[1] == cakeBefore[1]) {
-            await this.seleniumInfra.clickElement('id', 'arrow-up')
-            arr = await this.sort_array()
-            if (arr[0] == cakeAfter[0] && arr[1] == cakeAfter[1]) {
-                console.log("The cake arrow up work good")
-            }
+        let elementFromTable =await this.seleniumInfra.findElementListBy("className","ItemContainerHeadline")
+
+        this.up={
+            left:await elementFromTable[0].getText(),
+            right:await elementFromTable[1].getText()
         }
-        else {
-            console.error("The parameters are not ok ")
+        this.down = {
+            left:await elementFromTable[2].getText(),
+            right:await elementFromTable[3].getText()
         }
+        
+
     }
-    async Press_Down(cakeBefore, cakeAfter)
+    async checkIfTheCakeInTheirPlace(cakes)
     {
-        let arr = await this.sort_array()
-        if (arr[0] == cakeBefore[0] && arr[1] == cakeBefore[1])
+        if(this.up.left == cakes[0] && this.up.right == cakes[1])
         {
-            await this.seleniumInfra.clickElement('id', 'arrow-down')
-            arr = await this.sort_array()
-            if (arr[0] == cakeAfter[0] && arr[1] == cakeAfter[1])
-            {
-                console.log("The cake arrow down work good")
-            }
+            console.log("The cakes: "+cakes+" that you check is the Same yay! \n")
         }
-        else
-        {
-            console.error("The parameters are not ok ")
+        else{
+            console.log("something Wrong the cakes that you send: "+cakes+" are not the same")
         }
+
     }
-
-
-
+    
+    
+    async pressUp(cakeBefore, cakeAfter) 
+    {
+        await this.getTableElements()
+        await this.checkIfTheCakeInTheirPlace(cakeBefore)
+        await this.seleniumInfra.clickElement("id","arrow-up") 
+        await this.getTableElements()
+        await this.checkIfTheCakeInTheirPlace(cakeAfter)
+        await this.seleniumInfra.close()
+    }
+    
+    async pressDown(cakeBefore,cakeAfter)
+    {
+        await this.getTableElements()
+        await this.checkIfTheCakeInTheirPlace(cakeBefore)
+        await this.seleniumInfra.clickElement("id","arrow-down") 
+        await this.getTableElements()
+        await this.checkIfTheCakeInTheirPlace(cakeAfter)
+        await this.seleniumInfra.close()
+    }
 
 
 
 }
+module.exports = ProductPage

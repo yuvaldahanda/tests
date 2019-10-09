@@ -91,7 +91,7 @@ class HomePage {
             console.log("the outputmatch to input")
         }   
 
-        // await this.selenium.close()
+         await this.selenium.close()
 
     }
 
